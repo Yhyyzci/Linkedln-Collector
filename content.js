@@ -25,11 +25,9 @@ async function collectProfiles() {
     });
 
     // Her sayfada CSV oluştur ve indir
-    const headers = ['İsim', 'Ünvan', 'Konum', 'Profil URL', 'Profil Resmi URL', 'Sayfa No'];
+    const headers = ['İsim', 'Profil URL', 'Profil Resmi URL', 'Sayfa No'];
     const rows = profiles.map(p => [
       p.name || '',
-      p.title || '',
-      p.location || '',
       p.profileUrl || '',
       p.imageUrl || '',
       p.page || ''
@@ -119,14 +117,45 @@ async function getProfilesFromPage() {
         card.querySelector('.ivm-view-attr__img--centered') ||
         card.querySelector('img.presence-entity__image');
 
+      // Şirket ve konum bilgisini daha detaylı çıkar
+      let company = '';
+      let location = '';
+
+      if (titleElement) {
+        const titleText = titleElement.textContent.trim();
+        // Şirket bilgisi için farklı formatları kontrol et
+        if (titleText.includes(' at ')) {
+          company = titleText.split(' at ')[1].split(' · ')[0].trim();
+        } else if (titleText.includes(' · ')) {
+          const parts = titleText.split(' · ');
+          company = parts[parts.length - 1].trim();
+        }
+      }
+
+      if (locationElement) {
+        location = locationElement.textContent.trim();
+        // Gereksiz bilgileri temizle
+        location = location.replace('Location:', '').trim();
+      }
+
       const profile = {
         name: nameElement.textContent.trim(),
         profileUrl: (nameElement.closest('a') || nameElement.parentElement.closest('a')).href,
-        title: titleElement?.textContent?.trim() || '',
-        location: locationElement?.textContent?.trim() || '',
         imageUrl: imageElement?.src || '',
         page: currentPage
       };
+
+      // Debug için
+      console.log('İşlenen profil:', {
+        raw: {
+          title: titleElement?.textContent,
+          location: locationElement?.textContent
+        },
+        processed: {
+          company: company,
+          location: location
+        }
+      });
 
       profiles.push(profile);
     } catch (error) {

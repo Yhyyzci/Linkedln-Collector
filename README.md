@@ -7,8 +7,6 @@ LinkedIn arama sonuçlarından profil verilerini toplayan Chrome eklentisi.
 - Her sayfa için ayrı CSV dosyası oluşturma
 - Profil bilgilerini detaylı kaydetme:
   - İsim
-  - Ünvan
-  - Konum
   - Profil URL
   - Profil Resmi URL
   - Sayfa Numarası
@@ -34,7 +32,14 @@ LinkedIn arama sonuçlarından profil verilerini toplayan Chrome eklentisi.
 - Content script ile profil verilerini toplama
 - Background script ile CSV indirme işlemi
 - Popup ile kullanıcı arayüzü
-- Asenkron işlemler için Promise yapısı
-- Otomatik scroll ve sayfa geçişleri
 
-## Dosya Yapısı 
+
+## Güvenlik ve Gizlilik
+- Sadece LinkedIn arama sonuçları sayfasında çalışır
+- Toplanan veriler sadece yerel olarak indirilir
+
+
+## Geliştirme Notları
+- LinkedIn'in yapısı değişirse seçiciler güncellenmelidir
+- Her sayfa için ayrı CSV tercih edildi
+
